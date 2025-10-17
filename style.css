@@ -1,0 +1,41 @@
+body {
+    font-family: 'Comfortaa', sans-serif;
+    background-image: url('https://images.pexels.com/photos/34294208/pexels-photo-34294208.jpeg');
+    background-color: #a7e0a7; /* A fallback green color */
+    background-size: cover; /* This makes the image cover the entire viewport */
+    background-position: center; /* This centers the image */
+    background-attachment: fixed; /* This makes the background stay in place on scroll */
+}
+.weather-card {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+.forecast-card {
+     background: rgba(255, 255, 255, 0.15);
+}
+.search-bar {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 182, 193, 0.6); 
+    color: #333; /* Ensure text is dark inside search bar */
+}
+.search-bar::placeholder {
+    color: #666; /* Ensure placeholder text is also dark */
+}
+.angelic-glow {
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.9), 0 0 16px rgba(255, 255, 255, 0.7), 0 0 24px rgba(255, 192, 203, 0.6);
+}
+
+/* New style for the Fun Facts card to make it look like a white notepad */
+.fun-fact-card {
+    background: rgba(255, 255, 255, 0.8); /* Solid white, slightly transparent */
+    backdrop-filter: blur(5px); /* Less blur to make it more solid */
+    border: 1px solid rgba(255, 182, 193, 0.8); /* Pink border to match the theme */
+    color: #333; /* Dark text for readability */
+}
+/* Ensure the border-b inside fun-fact-card also matches */
+.fun-fact-card .border-b {
+    border-color: rgba(255, 182, 193, 0.6); /* Soft pink for the separator */
+}
+
