@@ -4,40 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Real-Time Weather Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- External Libraries --><script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Comfortaa', sans-serif;
-            /* BACKGROUND CHANGE: Updated to your selected Pexels image */
-            background-image: url('https://images.pexels.com/photos/34294208/pexels-photo-34294208.jpeg');
-            background-color: #a7e0a7; /* A fallback green color */
-            background-size: cover; /* This makes the image cover the entire viewport */
-            background-position: center; /* This centers the image */
-            background-attachment: fixed; /* This makes the background stay in place on scroll */
-        }
-        .weather-card {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-        .forecast-card {
-             background: rgba(255, 255, 255, 0.15);
-        }
-        .search-bar {
-            background: rgba(255, 255, 255, 0.2);
-            /* Added glass effect and a soft pink border */
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 182, 193, 0.6); 
-        }
-        /* Added for a radiant text effect on the loading screen */
-        .angelic-glow {
-            text-shadow: 0 0 8px rgba(255, 255, 255, 0.9), 0 0 16px rgba(255, 255, 255, 0.7), 0 0 24px rgba(255, 192, 203, 0.6);
-        }
-    </style>
+    <!-- Link to your CSS file --><link rel="stylesheet" href="style.css">
 </head>
 <body class="flex items-center justify-center min-h-screen p-4 text-gray-800">
 
@@ -46,8 +18,8 @@
         <p class="mt-4 text-xl text-gray-800 angelic-glow">Fetching weather data...</p>
     </div>
 
-    <div id="app-wrapper" class="hidden w-full max-w-4xl mx-auto">
-        <div class="mb-6">
+    <div id="app-wrapper" class="hidden w-full max-w-7xl mx-auto">
+        <!-- Search Bar --><div class="max-w-xl mx-auto mb-6">
             <form id="search-form" class="relative">
                 <input id="city-input" type="text" placeholder="Search for a city..."
                        class="w-full py-3 pl-5 pr-12 text-lg text-gray-800 placeholder-gray-600 rounded-full search-bar focus:outline-none focus:ring-2 focus:ring-pink-300 transition-all duration-300">
@@ -55,215 +27,52 @@
                     <i class="fas fa-search fa-lg"></i>
                 </button>
             </form>
-             <p id="error-message" class="text-gray-700 font-semibold text-center mt-2 h-6"></p>
+            <p id="error-message" class="text-gray-700 font-semibold text-center mt-2 h-6"></p>
         </div>
 
-        <main id="weather-container" class="hidden">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="md:col-span-2 p-8 rounded-3xl shadow-lg weather-card">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h2 id="city-name" class="text-4xl font-bold">--</h2>
-                            <p id="current-date" class="text-lg text-gray-600">--</p>
-                        </div>
-                        <div id="weather-icon" class="text-6xl"></div>
-                    </div>
-                    <div class="mt-8 flex items-end justify-between">
-                         <p id="temperature" class="text-8xl font-bold tracking-tighter">--°C</p>
-                         <p id="weather-description" class="text-2xl font-medium capitalize">--</p>
-                    </div>
-                </div>
-
-                <div class="p-8 rounded-3xl shadow-lg weather-card">
-                    <h3 class="text-xl font-semibold mb-4 border-b border-gray-500 pb-2">Details</h3>
-                    <div class="space-y-4">
-                        <div class="flex justify-between items-center">
-                            <span class="text-gray-600">Humidity</span>
-                            <span id="humidity" class="font-bold text-lg">--%</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-gray-600">Wind Speed</span>
-                            <span id="wind-speed" class="font-bold text-lg">-- km/h</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-gray-600">Pressure</span>
-                            <span id="pressure" class="font-bold text-lg">-- hPa</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-gray-600">Visibility</span>
-                            <span id="visibility" class="font-bold text-lg">-- km</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mt-6 p-8 rounded-3xl shadow-lg weather-card">
-                <h3 class="text-xl font-semibold mb-4">5-Day Forecast</h3>
-                <div id="forecast-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 text-center"></div>
-            </div>
-        </main>
-    </div>
-
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const apiKey = 'fb66fe43361cd5009ce684e3da688b04';
-
-            const appWrapper = document.getElementById('app-wrapper');
-            const weatherContainer = document.getElementById('weather-container');
-            const loadingIndicator = document.getElementById('loading');
-            const searchForm = document.getElementById('search-form');
-            const cityInput = document.getElementById('city-input');
-            const errorMessage = document.getElementById('error-message');
-            const cityNameEl = document.getElementById('city-name');
-            const currentDateEl = document.getElementById('current-date');
-            const weatherIconEl = document.getElementById('weather-icon');
-            const temperatureEl = document.getElementById('temperature');
-            const weatherDescriptionEl = document.getElementById('weather-description');
-            const humidityEl = document.getElementById('humidity');
-            const windSpeedEl = document.getElementById('wind-speed');
-            const pressureEl = document.getElementById('pressure');
-            const visibilityEl = document.getElementById('visibility');
-            const forecastContainer = document.getElementById('forecast-container');
-
-            const fetchWeatherData = async (city) => {
-                if (!apiKey) {
-                    errorMessage.textContent = 'API Key is missing.';
-                    loadingIndicator.classList.add('hidden');
-                    appWrapper.classList.remove('hidden');
-                    weatherContainer.classList.add('hidden');
-                    return;
-                }
-                
-                errorMessage.textContent = '';
-                // Show loading indicator only on initial load, not subsequent searches
-                if (appWrapper.classList.contains('hidden')) {
-                    loadingIndicator.classList.remove('hidden');
-                } else {
-                     weatherContainer.classList.add('hidden'); // Hide old data before fetching new
-                }
-
-                try {
-                    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
-                    const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`;
-                    const [weatherResponse, forecastResponse] = await Promise.all([fetch(apiUrl), fetch(forecastUrl)]);
-
-                    if (weatherResponse.status === 401) throw new Error('API key is invalid. Please check it.');
-                    if (weatherResponse.status === 404) throw new Error(`City '${city}' not found.`);
-                    if (!weatherResponse.ok) throw new Error('Could not fetch weather data.');
-
-                    const weatherData = await weatherResponse.json();
-                    const forecastData = await forecastResponse.json();
-                    updateUI(weatherData, forecastData);
-                } catch (error) {
-                    console.error("Error fetching weather data:", error);
-                    errorMessage.textContent = error.message;
-                    appWrapper.classList.remove('hidden'); 
-                    weatherContainer.classList.add('hidden');
-                } finally {
-                    loadingIndicator.classList.add('hidden');
-                }
-            };
-
-            const fetchWeatherByCoords = async (lat, lon) => {
-                try {
-                    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
-                    const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
-                    const [weatherResponse, forecastResponse] = await Promise.all([fetch(apiUrl), fetch(forecastUrl)]);
-                    if (!weatherResponse.ok) throw new Error('Could not fetch local weather.');
-                    
-                    const weatherData = await weatherResponse.json();
-                    const forecastData = await forecastResponse.json();
-                    updateUI(weatherData, forecastData);
-                } catch (error) {
-                    console.warn("Could not fetch by coords, defaulting to Paarl.", error);
-                    errorMessage.textContent = "Could not get your location. Showing weather for Paarl.";
-                    await fetchWeatherData('Paarl');
-                }
-            };
-
-            const updateUI = (weather, forecast) => {
-                cityNameEl.textContent = `${weather.name}, ${weather.sys.country}`;
-                currentDateEl.textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-                temperatureEl.textContent = `${Math.round(weather.main.temp)}°C`;
-                weatherDescriptionEl.textContent = weather.weather[0].description;
-                weatherIconEl.innerHTML = getWeatherIcon(weather.weather[0].icon);
-
-                humidityEl.textContent = `${weather.main.humidity}%`;
-                windSpeedEl.textContent = `${(weather.wind.speed * 3.6).toFixed(1)} km/h`;
-                pressureEl.textContent = `${weather.main.pressure} hPa`;
-                visibilityEl.textContent = `${(weather.visibility / 1000).toFixed(1)} km`;
-
-                forecastContainer.innerHTML = '';
-                const dailyForecasts = forecast.list.filter(item => item.dt_txt.includes("12:00:00"));
-
-                dailyForecasts.slice(0, 5).forEach(day => {
-                    const dayName = new Date(day.dt * 1000).toLocaleDateString('en-US', { weekday: 'short' });
-                    const temp = `${Math.round(day.main.temp_min)}° / ${Math.round(day.main.temp_max)}°`;
-                    const icon = getWeatherIcon(day.weather[0].icon);
-
-                    const forecastCard = `
-                        <div class="p-4 rounded-2xl forecast-card flex flex-col items-center">
-                            <p class="font-semibold">${dayName}</p>
-                            <div class="text-4xl my-2">${icon}</div>
-                            <p class="text-sm">${temp}</p>
-                        </div>
-                    `;
-                    forecastContainer.innerHTML += forecastCard;
-                });
-                
-                loadingIndicator.classList.add('hidden');
-                appWrapper.classList.remove('hidden');
-                weatherContainer.classList.remove('hidden');
-            };
-
-            const getWeatherIcon = (iconCode) => {
-                const iconMap = {
-                    '01d': '<i class="fas fa-sun"></i>', '01n': '<i class="fas fa-moon"></i>',
-                    '02d': '<i class="fas fa-cloud-sun"></i>', '02n': '<i class="fas fa-cloud-moon"></i>',
-                    '03d': '<i class="fas fa-cloud"></i>', '03n': '<i class="fas fa-cloud"></i>',
-                    '04d': '<i class="fas fa-cloud"></i>', '04n': '<i class="fas fa-cloud"></i>',
-                    '09d': '<i class="fas fa-cloud-showers-heavy"></i>', '09n': '<i class="fas fa-cloud-showers-heavy"></i>',
-                    '10d': '<i class="fas fa-cloud-sun-rain"></i>', '10n': '<i class="fas fa-cloud-moon-rain"></i>',
-                    '11d': '<i class="fas fa-bolt"></i>', '11n': '<i class="fas fa-bolt"></i>',
-                    '13d': '<i class="fas fa-snowflake"></i>', '13n': '<i class="fas fa-snowflake"></i>',
-                    '50d': '<i class="fas fa-smog"></i>', '50n': '<i class="fas fa-smog"></i>'
-                };
-                return iconMap[iconCode] || '<i class="fas fa-question-circle"></i>';
-            };
-
-            searchForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const city = cityInput.value.trim();
-                if (city) {
-                    fetchWeatherData(city);
-                    cityInput.value = '';
-                }
-            });
-
-            // This is the crucial part that was missing!
-            const getInitialWeather = () => {
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(
-                        (position) => {
-                            const { latitude, longitude } = position.coords;
-                            fetchWeatherByCoords(latitude, longitude);
-                        },
-                        () => {
-                            // User denied or error occurred
-                            errorMessage.textContent = "Location access denied. Showing weather for Paarl.";
-                            fetchWeatherData('Paarl');
-                        }
-                    );
-                } else {
-                    errorMessage.textContent = "Geolocation is not supported by your browser.";
-                    fetchWeatherData('Paarl');
-                }
-            };
+        <!-- Main Content Grid --><div id="weather-container" class="hidden grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
             
-            getInitialWeather();
-        });
-    </script>
+            <!-- Main weather content (takes up 3 columns) --><div class="lg:col-span-3 space-y-6">
+                <!-- Top row: Main card and details --><div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="md:col-span-2 p-8 rounded-3xl shadow-lg weather-card">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h2 id="city-name" class="text-4xl font-bold">--</h2>
+                                <p id="current-date" class="text-lg text-gray-600">--</p>
+                            </div>
+                            <div id="weather-icon" class="text-6xl"></div>
+                        </div>
+                        <div class="mt-8 flex items-end justify-between">
+                            <p id="temperature" class="text-8xl font-bold tracking-tighter">--°C</p>
+                            <p id="weather-description" class="text-2xl font-medium capitalize">--</p>
+                        </div>
+                    </div>
+                    <div class="p-8 rounded-3xl shadow-lg weather-card">
+                        <h3 class="text-xl font-semibold mb-4 border-b border-gray-500 pb-2">Details</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center"><span class="text-gray-600">Humidity</span><span id="humidity" class="font-bold text-lg">--%</span></div>
+                            <div class="flex justify-between items-center"><span class="text-gray-600">Wind Speed</span><span id="wind-speed" class="font-bold text-lg">-- km/h</span></div>
+                            <div class="flex justify-between items-center"><span class="text-gray-600">Pressure</span><span id="pressure" class="font-bold text-lg">-- hPa</span></div>
+                            <div class="flex justify-between items-center"><span class="text-gray-600">Visibility</span><span id="visibility" class="font-bold text-lg">-- km</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom row: 5-Day Forecast --><div class="p-8 rounded-3xl shadow-lg weather-card">
+                    <h3 class="text-xl font-semibold mb-4">5-Day Forecast</h3>
+                    <div id="forecast-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 text-center"></div>
+                </div>
+            </div>
+
+            <!-- Fun Fact sidebar (takes up 1 column on lg screens) --><div id="fun-fact-container" class="hidden lg:block lg:col-span-1 p-6 rounded-3xl shadow-lg fun-fact-card">
+                <h3 class="text-xl font-semibold mb-4 border-b border-gray-500 pb-2 flex items-center">
+                    Fun Facts <i class="fas fa-flower ml-2 text-pink-500"></i>
+                </h3>
+                <p id="fun-fact-text" class="text-gray-800 italic leading-relaxed">Loading fun fact...</p>
+            </div>
+        </div>
+    </div>
+    <!-- Link to your JavaScript file --><script src="script.js"></script>
 </body>
 </html>
 
