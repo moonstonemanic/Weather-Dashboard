@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Real-Time Weather Dashboard</title>
-    <!-- External Libraries --><script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Link to your CSS file --><link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body class="flex items-center justify-center min-h-screen p-4 text-gray-800">
 
@@ -18,9 +18,11 @@
         <p class="mt-4 text-xl text-gray-800 angelic-glow">Fetching weather data...</p>
     </div>
 
-    <!-- Location Permission Modal --><div id="location-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <!-- Location Permission Modal -->
+    <div id="location-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
         <div class="modal-overlay absolute inset-0"></div>
-        <!-- Removed padding classes, now controlled by CSS for a better border --><div class="modal-content text-center rounded-3xl shadow-lg relative">
+        <!-- Modal Content -->
+        <div class="modal-content text-center rounded-3xl shadow-lg relative">
             <h2 class="text-3xl font-bold mb-4 text-gray-800">Where are you?</h2>
             <p class="text-gray-600 mb-6">Please enter your location to see the weather.</p>
             <form id="modal-search-form" class="relative max-w-sm mx-auto">
@@ -34,8 +36,9 @@
     </div>
 
     <div id="app-wrapper" class="hidden w-full max-w-7xl mx-auto">
-        <!-- Controls: Toggle and Search Bar --><div class="max-w-xl mx-auto mb-6">
-            <div class="flex justify-center items-center gap-4 mb-4 toggle-pill-container">
+        <!-- Search and Toggle Bar -->
+        <div class="max-w-xl mx-auto mb-6">
+            <div class="toggle-pill-container flex justify-center items-center gap-4 mb-4">
                 <span class="toggle-text font-medium">Use My Location</span>
                 <label for="location-toggle" class="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" id="location-toggle" class="sr-only peer">
@@ -44,18 +47,21 @@
             </div>
             <form id="search-form" class="relative">
                 <input id="city-input" type="text" placeholder="Search for a city..."
-                       class="w-full py-3 pl-5 pr-12 text-lg text-gray-800 placeholder-gray-600 rounded-full search-bar focus:outline-none focus:ring-2 focus:ring-pink-300 transition-all duration-300">
-                <button type="submit" class="absolute top-1/2 right-4 transform -translate-y-1/2 text-gray-400 hover:text-gray-700 transition-colors">
+                       class="w-full py-3 pl-5 pr-12 text-lg placeholder-white rounded-full search-bar focus:outline-none focus:ring-2 focus:ring-pink-300 transition-all duration-300">
+                <button type="submit" class="absolute top-1/2 right-4 transform -translate-y-1/2 text-gray-300 hover:text-white transition-colors">
                     <i class="fas fa-search fa-lg"></i>
                 </button>
             </form>
             <p id="error-message" class="text-gray-700 font-semibold text-center mt-2 h-6"></p>
         </div>
 
-        <!-- Main Content Grid --><div id="weather-container" class="hidden grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
+        <!-- Main Content Grid -->
+        <div id="weather-container" class="hidden grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
             
-            <!-- Main weather content (takes up 3 columns) --><div class="lg:col-span-3 space-y-6">
-                <!-- Top row: Main card and details --><div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Left Column -->
+            <div class="lg:col-span-3 space-y-6">
+                <!-- Weather Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="md:col-span-2 p-8 rounded-3xl shadow-lg weather-card">
                         <div class="flex justify-between items-start">
                             <div>
@@ -74,27 +80,41 @@
                         <div class="space-y-4">
                             <div class="flex justify-between items-center"><span class="text-gray-600">Humidity</span><span id="humidity" class="font-bold text-lg">--%</span></div>
                             <div class="flex justify-between items-center"><span class="text-gray-600">Wind Speed</span><span id="wind-speed" class="font-bold text-lg">-- km/h</span></div>
-                            <div class="flex justify-between items-center"><span id="pressure" class="font-bold text-lg">-- hPa</span></div>
+                            <div class="flex justify-between items-center"><span class="text-gray-600">Pressure</span><span id="pressure" class="font-bold text-lg">-- hPa</span></div>
                             <div class="flex justify-between items-center"><span class="text-gray-600">Visibility</span><span id="visibility" class="font-bold text-lg">-- km</span></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Bottom row: 5-Day Forecast --><div class="p-8 rounded-3xl shadow-lg weather-card">
+                <!-- Forecast Card -->
+                <div class="p-8 rounded-3xl shadow-lg weather-card">
                     <h3 class="text-xl font-semibold mb-4">5-Day Forecast</h3>
                     <div id="forecast-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 text-center"></div>
                 </div>
+
+                <!-- Plant This Now Card (Moved Here) -->
+                <div id="plant-now-container" class="lg:col-span-3 p-6 rounded-3xl shadow-lg fun-fact-card">
+                     <h3 class="text-xl font-semibold mb-4 border-b pb-2 flex items-center">
+                        Plant This Now <i class="fas fa-seedling ml-2 text-green-600"></i>
+                    </h3>
+                    <div id="plant-suggestion-content">
+                        <p class="text-gray-800 italic leading-relaxed">Getting planting advice...</p>
+                    </div>
+                </div>
             </div>
 
-            <!-- Sidebar container for Fun Facts and News --><div class="lg:col-span-1 space-y-6">
-                <!-- Fun Fact Card --><div id="fun-fact-container" class="hidden lg:block p-6 rounded-3xl shadow-lg fun-fact-card">
+            <!-- Right Column -->
+            <div class="lg:col-span-1 space-y-6">
+                <!-- Fun Facts Card -->
+                <div id="fun-fact-container" class="hidden lg:block p-6 rounded-3xl shadow-lg fun-fact-card">
                     <h3 class="text-xl font-semibold mb-4 border-b pb-2 flex items-center">
                         Fun Facts <i class="fas fa-flower ml-2 text-pink-500"></i>
                     </h3>
                     <p id="fun-fact-text" class="text-gray-800 italic leading-relaxed">Loading fun fact...</p>
                 </div>
 
-                <!-- Current News Card --><div id="news-card-container" class="hidden lg:block p-6 rounded-3xl shadow-lg fun-fact-card">
+                <!-- News Card -->
+                <div id="news-card-container" class="hidden lg:block p-6 rounded-3xl shadow-lg fun-fact-card">
                     <h3 class="text-xl font-semibold mb-4 border-b pb-2 flex items-center">
                         Current News
                     </h3>
@@ -105,7 +125,8 @@
             </div>
         </div>
     </div>
-    <!-- Link to your JavaScript file --><script src="script.js"></script>
+    
+    <script src="script.js"></script>
 </body>
 </html>
 

@@ -1,0 +1,126 @@
+{
+    "northernHemisphere": {
+        "January": [
+            { "name": "Pansies & Violas", "tip": "can be started indoors now for early spring color." },
+            { "name": "Spinach & Kale", "tip": "can be planted under cover in milder climates." },
+            { "name": "Rosemary", "tip": "is a great herb to start indoors from cuttings." }
+        ],
+        "February": [
+            { "name": "Begonias", "tip": "should be started indoors to give them a head start." },
+            { "name": "Radishes & Lettuce", "tip": "can be sown directly outdoors in late February in moderate zones." },
+            { "name": "Dahlias", "tip": "tubers can be started in pots indoors." }
+        ],
+        "March": [
+            { "name": "Tomatoes & Peppers", "tip": "are perfect for starting from seed indoors." },
+            { "name": "Peas & Carrots", "tip": "can be sown directly in the garden as soon as the soil is workable." },
+            { "name": "Lilacs", "tip": "shrubs are best planted in early spring." }
+        ],
+        "April": [
+            { "name": "Sunflowers & Zinnias", "tip": "can be sown directly outside after the last frost." },
+            { "name": "Cucumbers & Squash", "tip": "are ready to be planted directly in the garden." },
+            { "name": "Marigolds", "tip": "are easy to grow from seed and help deter pests." }
+        ],
+        "May": [
+            { "name": "Basil & Cilantro", "tip": "thrive when planted in warm soil." },
+            { "name": "Beans & Corn", "tip": "are classic summer vegetables to plant now." },
+            { "name": "Petunias", "tip": "are perfect for adding instant color to pots and borders." }
+        ],
+        "June": [
+            { "name": "Pumpkins", "tip": "should be planted now for a Halloween harvest." },
+            { "name": "Heat-tolerant lettuce", "tip": "varieties can be sown for a late summer crop." },
+            { "name": "Cosmos", "tip": "are fast-growing and will bloom all summer." }
+        ],
+        "July": [
+            { "name": "Broccoli & Cauliflower", "tip": "can be started from seed for a fall harvest." },
+            { "name": "Turnips & Beets", "tip": "are great fall root crops to plant in mid-summer." },
+            { "name": "Black-Eyed Susans", "tip": "can be planted now for beautiful late-season color." }
+        ],
+        "August": [
+            { "name": "Spinach & Collard Greens", "tip": "can be planted now for a delicious fall crop." },
+            { "name": "Fall Mums", "tip": "should be planted now to establish before the cold." },
+            { "name": "Peonies", "tip": "are best planted or divided in the fall." }
+        ],
+        "September": [
+            { "name": "Garlic & Shallots", "tip": "should be planted in the fall for a harvest next summer." },
+            { "name": "Tulips & Daffodils", "tip": "are spring-flowering bulbs that need to be planted now." },
+            { "name": "Cool-season grasses", "tip": "are best seeded in the early fall." }
+        ],
+        "October": [
+            { "name": "Winter Pansies", "tip": "can be planted now for color through the colder months." },
+            { "name": "Cover Crops", "tip": "like clover can be sown to enrich the soil over winter." },
+            { "name": "Trees & Shrubs", "tip": "benefit from fall planting, allowing roots to establish." }
+        ],
+        "November": [
+            { "name": "Amaryllis Bulbs", "tip": "can be planted indoors now for holiday blooms." },
+            { "name": "Garlic", "tip": "can still be planted in many zones if the ground isn't frozen." },
+            { "name": "Forcing Bulbs", "tip": "like paperwhites can be started for indoor winter fragrance." }
+        ],
+        "December": [
+            { "name": "Microgreens", "tip": "are easy to grow indoors on a sunny windowsill for fresh winter greens." },
+            { "name": "Rosemary Trees", "tip": "can be brought indoors to be enjoyed as a fragrant holiday plant." },
+            { "name": "Living Christmas Trees", "tip": "can be planted outdoors after the holidays in suitable climates." }
+        ]
+    },
+    "southernHemisphere": {
+        "January": [
+            { "name": "Broccoli & Cauliflower", "tip": "can be started from seed for an autumn harvest." },
+            { "name": "Carrots & Beets", "tip": "can be sown now for delicious root vegetables." },
+            { "name": "Celosia", "tip": "provides wonderful, feathery plumes of color in late summer." }
+        ],
+        "February": [
+            { "name": "Spinach & Silverbeet", "tip": "can be planted now for a productive autumn and winter crop." },
+            { "name": "Snapdragons", "tip": "can be sown now for beautiful late-season flowers." },
+            { "name": "Leeks", "tip": "are perfect for planting now for winter soups." }
+        ],
+        "March": [
+            { "name": "Garlic & Onions", "tip": "should be planted in early autumn for a harvest next summer." },
+            { "name": "Tulips & Daffodils", "tip": "are spring-flowering bulbs that need to be planted now." },
+            { "name": "Sweet Peas", "tip": "can be sown now for fragrant spring flowers." }
+        ],
+        "April": [
+            { "name": "Broad Beans", "tip": "are a hardy crop that can be planted now for spring." },
+            { "name": "Pansies & Violas", "tip": "will provide cheerful color throughout the cooler months." },
+            { "name": "Deciduous Trees", "tip": "are best planted now while they are dormant." }
+        ],
+        "May": [
+            { "name": "Kale & Cabbage", "tip": "are hardy greens that can be planted for a winter harvest." },
+            { "name": "Poppies", "tip": "can be sown directly in the garden for a spring display." },
+            { "name": "Fruit Trees", "tip": "like apples and pears are ideal to plant during dormancy." }
+        ],
+        "June": [
+            { "name": "Garlic", "tip": "can still be planted if you haven't already." },
+            { "name": "Hellebores (Winter Rose)", "tip": "are perfect for adding color to the winter garden." },
+            { "name": "Bare-root Roses", "tip": "should be planted now while they are dormant." }
+        ],
+        "July": [
+            { "name": "Potatoes", "tip": "can be chitted on a windowsill ready for spring planting." },
+            { "name": "Asparagus", "tip": "crowns can be planted now for a long-term harvest." },
+            { "name": "Rhubarb", "tip": "crowns are best planted in winter." }
+        ],
+        "August": [
+            { "name": "Tomatoes & Peppers", "tip": "can be started from seed indoors for an early start." },
+            { "name": "Gladiolus", "tip": "bulbs can be planted for a spectacular summer flower show." },
+            { "name": "Strawberries", "tip": "can be planted now for a delicious summer crop." }
+        ],
+        "September": [
+            { "name": "Cucumbers & Zucchini", "tip": "can be sown directly in the garden after the last frost." },
+            { "name": "Sunflowers & Cosmos", "tip": "are easy to grow from seed for a vibrant summer garden." },
+            { "name": "Lettuce & Radishes", "tip": "are quick-growing crops to plant for spring salads." }
+        ],
+        "October": [
+            { "name": "Beans & Corn", "tip": "thrive in the warming soil of late spring." },
+            { "name": "Basil & Parsley", "tip": "are essential summer herbs to plant now." },
+            { "name": "Petunias", "tip": "are perfect for adding instant color to hanging baskets and pots." }
+        ],
+        "November": [
+            { "name": "Pumpkins & Melons", "tip": "should be planted now for a late summer harvest." },
+            { "name": "Sweet Potatoes", "tip": "slips can be planted in warm, sunny spots." },
+            { "name": "Zinnias", "tip": "love the heat and will flower profusely all summer." }
+        ],
+        "December": [
+            { "name": "Buckwheat", "tip": "can be sown as a fast-growing summer cover crop to improve soil." },
+            { "name": "Capsicums (Peppers) & Eggplants", "tip": "can still be planted in warmer climates." },
+            { "name": "Marigolds", "tip": "can be planted among vegetables to help deter pests." }
+        ]
+    }
+}

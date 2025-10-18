@@ -1,7 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     const weatherApiKey = 'fb66fe43361cd5009ce684e3da688b04';
-    // --- VITAL STEP: Replace the placeholder below with your new key from NewsAPI.org ---
-    // --- The news section will not work until you do this. ---
     const newsApiKey = '5cf77a69e5104908af19f82cb3aa44ac';
 
     // Element selectors
@@ -24,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const funFactTextEl = document.getElementById('fun-fact-text');
     const newsContainerEl = document.getElementById('news-container');
     const locationToggle = document.getElementById('location-toggle');
+    const plantSuggestionContentEl = document.getElementById('plant-suggestion-content'); // New selector
 
     // Modal element selectors
     const locationModal = document.getElementById('location-modal');
@@ -31,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalCityInput = document.getElementById('modal-city-input');
 
     let flowerFacts = [];
+    let plantingGuide = {}; // New variable for planting data
 
     // --- MODAL FUNCTIONS ---
     const showLocationModal = () => {
@@ -42,15 +42,24 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // --- DATA FETCHING AND DISPLAY ---
-    const loadFunFacts = async () => {
+    const loadJsonData = async () => {
         try {
-            const response = await fetch('flower-facts.json');
-            if (!response.ok) throw new Error('Could not load flower facts.');
-            const data = await response.json();
-            flowerFacts = data.facts;
+            const [factsResponse, plantingResponse] = await Promise.all([
+                fetch('flower-facts.json'),
+                fetch('planting-guide.json')
+            ]);
+            if (!factsResponse.ok) throw new Error('Could not load flower facts.');
+            if (!plantingResponse.ok) throw new Error('Could not load planting guide.');
+            
+            const factsData = await factsResponse.json();
+            const plantingData = await plantingResponse.json();
+            
+            flowerFacts = factsData.facts;
+            plantingGuide = plantingData;
         } catch (error) {
             console.error(error);
-            funFactTextEl.textContent = 'Could not load a fun fact right now.';
+            funFactTextEl.textContent = 'Could not load fun facts.';
+            plantSuggestionContentEl.innerHTML = '<p class="text-sm italic">Could not load planting advice.</p>';
         }
     };
 
@@ -59,10 +68,27 @@ document.addEventListener('DOMContentLoaded', () => {
         const randomIndex = Math.floor(Math.random() * flowerFacts.length);
         funFactTextEl.textContent = flowerFacts[randomIndex];
     };
+    
+    // --- NEW: Function to display planting suggestion ---
+    const displayPlantingSuggestion = (latitude) => {
+        if (Object.keys(plantingGuide).length === 0) return;
+
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const currentMonth = monthNames[new Date().getMonth()];
+        const hemisphere = latitude >= 0 ? 'northernHemisphere' : 'southernHemisphere';
+        
+        const suggestions = plantingGuide[hemisphere][currentMonth];
+        if (suggestions && suggestions.length > 0) {
+            const suggestion = suggestions[Math.floor(Math.random() * suggestions.length)];
+            plantSuggestionContentEl.innerHTML = `<p class="text-gray-800 leading-relaxed"><strong class="font-semibold">${suggestion.name}</strong> ${suggestion.tip}</p>`;
+        } else {
+            plantSuggestionContentEl.innerHTML = '<p class="text-sm italic">No planting suggestions for this month.</p>';
+        }
+    };
 
     const fetchNewsData = async () => {
         if (!newsApiKey || newsApiKey === 'YOUR_NEW_NEWS_API_KEY_HERE') {
-            newsContainerEl.innerHTML = '<p class="text-sm italic">Please add your new NewsAPI.org key to script.js</p>';
+            newsContainerEl.innerHTML = '<p class="text-sm italic">News API key is missing.</p>';
             return;
         }
         const url = `https://newsapi.org/v2/top-headlines?category=general&language=en&pageSize=5&apiKey=${newsApiKey}`;
@@ -150,6 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
             forecastContainer.innerHTML += forecastCard;
         });
         displayFunFact();
+        displayPlantingSuggestion(weather.coord.lat); // Call the new function here
         weatherContainer.classList.remove('hidden');
     };
 
@@ -186,12 +213,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     locationToggle.addEventListener('change', () => {
         if (locationToggle.checked) {
-            // User turned location ON
             loadingIndicator.classList.remove('hidden');
             appWrapper.classList.add('hidden');
             getInitialWeather(); 
         } else {
-            // User turned location OFF
             localStorage.setItem('locationPermission', 'denied');
             showLocationModal();
         }
@@ -214,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     showLocationModal();
                 }
             );
-        } else { // Geolocation not supported by browser
+        } else { // Geolocation not supported
             localStorage.setItem('locationPermission', 'denied');
             locationToggle.checked = false;
             loadingIndicator.classList.add('hidden');
@@ -223,23 +248,17 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
     const initializeApp = async () => {
-        await loadFunFacts();
+        await loadJsonData(); // Now loads both JSON files
         fetchNewsData();
         const permissionStatus = localStorage.getItem('locationPermission');
 
         if (permissionStatus === 'granted') {
             locationToggle.checked = true;
             getInitialWeather();
-        } else if (permissionStatus === 'denied') {
+        } else { // Covers 'denied' and first-time visitors
             locationToggle.checked = false;
             loadingIndicator.classList.add('hidden');
             showLocationModal();
-        } else {
-            // First time visitor, toggle is off by default
-            locationToggle.checked = false;
-            loadingIndicator.classList.add('hidden');
-            // Ask for permission for first-time users
-            getInitialWeather();
         }
     };
 
