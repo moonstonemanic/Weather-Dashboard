@@ -1,41 +1,94 @@
+/* Base and Body styles */
 body {
     font-family: 'Comfortaa', sans-serif;
     background-image: url('https://images.pexels.com/photos/34294208/pexels-photo-34294208.jpeg');
-    background-color: #a7e0a7; /* A fallback green color */
-    background-size: cover; /* This makes the image cover the entire viewport */
-    background-position: center; /* This centers the image */
-    background-attachment: fixed; /* This makes the background stay in place on scroll */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
 }
+
+/* Angelic Glow effect for text */
+.angelic-glow {
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.7), 0 0 12px rgba(255, 255, 255, 0.5), 0 0 18px rgba(255, 182, 193, 0.5);
+}
+
+/* Glassmorphism card styles */
 .weather-card {
     background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px); /* For Safari */
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
+
 .forecast-card {
-     background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.15);
 }
+
 .search-bar {
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 182, 193, 0.6); 
-    color: #333; /* Ensure text is dark inside search bar */
-}
-.search-bar::placeholder {
-    color: #666; /* Ensure placeholder text is also dark */
-}
-.angelic-glow {
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.9), 0 0 16px rgba(255, 255, 255, 0.7), 0 0 24px rgba(255, 192, 203, 0.6);
+    -webkit-backdrop-filter: blur(10px); /* For Safari */
+    border: 1px solid rgba(255, 192, 203, 0.8);
+    color: white; /* Make the input text white */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4); /* Add shadow for readability */
 }
 
-/* New style for the Fun Facts card to make it look like a white notepad */
-.fun-fact-card {
-    background: rgba(255, 255, 255, 0.8); /* Solid white, slightly transparent */
-    backdrop-filter: blur(5px); /* Less blur to make it more solid */
-    border: 1px solid rgba(255, 182, 193, 0.8); /* Pink border to match the theme */
-    color: #333; /* Dark text for readability */
+/* Placeholder text styles for the search bar */
+.search-bar::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: rgba(255, 255, 255, 0.8);
+    opacity: 1; /* Override Firefox's default lower opacity */
 }
-/* Ensure the border-b inside fun-fact-card also matches */
-.fun-fact-card .border-b {
-    border-color: rgba(255, 182, 193, 0.6); /* Soft pink for the separator */
+
+.search-bar:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.search-bar::-ms-input-placeholder { /* Microsoft Edge */
+    color: rgba(255, 255, 255, 0.8);
+}
+
+
+/* Solid notepad-style card for Fun Facts and News */
+.fun-fact-card {
+    background: rgba(253, 251, 245, 0.85); /* Solid, creamy white with slight transparency */
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(200, 200, 200, 0.4);
+}
+
+/* Location Toggle Text and Pill Background */
+.toggle-pill-container {
+    padding: 10px 20px; /* Adjust padding as needed */
+    border-radius: 9999px; /* Fully rounded corners for a pill shape */
+    background: rgba(255, 255, 255, 0.25); /* Slightly darker white, more opaque */
+    backdrop-filter: blur(10px); /* Liquid glass effect */
+    -webkit-backdrop-filter: blur(10px); /* For Safari */
+    border: 1px solid rgba(255, 255, 255, 0.4); /* Subtle border */
+    display: inline-flex; /* To make it wrap content */
+    align-items: center; /* Align text and toggle vertically */
+    gap: 1rem; /* Space between text and toggle */
+}
+
+.toggle-text {
+    color: white;
+    font-weight: 600;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+
+/* --- NEW: Corrected Location Modal Styles --- */
+.modal-overlay {
+    background: rgba(40, 20, 30, 0.5); /* A soft, dark overlay without blur */
+}
+
+.modal-content {
+    background-color: #fdfaf6; /* Solid, creamy white */
+    padding: 2.5rem; /* Control padding for a better look */
+    border: 20px solid transparent; /* Set up border area for the image */
+    border-image-slice: 60; /* How to slice the border image */
+    border-image-repeat: round; /* Use 'round' to prevent stretching and distortion */
+    border-image-source: url('https://i.pinimg.com/originals/f5/15/48/f5154884ea8986a7674b592474130f14.png'); /* A better quality border image */
+    max-width: 500px;
+    width: 95%;
 }
 
