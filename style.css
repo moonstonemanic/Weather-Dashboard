@@ -1,7 +1,7 @@
 /* Base and Body styles */
 body {
     font-family: 'Comfortaa', sans-serif;
-    background-image: url('https://images.pexels.com/photos/34294208/pexels-photo-34294208.jpeg');
+    background-image: url('https://i.pinimg.com/736x/7a/a9/fe/7aa9fe10fa16eecdca67da928bd6a68b.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -25,26 +25,26 @@ body {
 }
 
 .search-bar {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(47, 79, 79, 0.8); /* Dark background for high visibility */
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px); /* For Safari */
-    border: 1px solid rgba(255, 192, 203, 0.8);
-    color: white; /* Make the input text white */
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4); /* Add shadow for readability */
+    border: 2px solid rgba(255, 255, 255, 0.7); /* Light border for contrast */
+    color: #FFFFFF; /* White text for readability */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 /* Placeholder text styles for the search bar */
 .search-bar::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.7); /* Light placeholder */
     opacity: 1; /* Override Firefox's default lower opacity */
 }
 
 .search-bar:-ms-input-placeholder { /* Internet Explorer 10-11 */
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .search-bar::-ms-input-placeholder { /* Microsoft Edge */
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.7);
 }
 
 
@@ -60,7 +60,7 @@ body {
 .toggle-pill-container {
     padding: 10px 20px; /* Adjust padding as needed */
     border-radius: 9999px; /* Fully rounded corners for a pill shape */
-    background: rgba(255, 255, 255, 0.25); /* Slightly darker white, more opaque */
+    background: rgba(255, 255, 255, 0.6); /* Made more opaque for contrast */
     backdrop-filter: blur(10px); /* Liquid glass effect */
     -webkit-backdrop-filter: blur(10px); /* For Safari */
     border: 1px solid rgba(255, 255, 255, 0.4); /* Subtle border */
@@ -70,9 +70,8 @@ body {
 }
 
 .toggle-text {
-    color: white;
+    color: #2F4F4F; /* Changed text to dark, readable color */
     font-weight: 600;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 
@@ -90,5 +89,14 @@ body {
     border-image-source: url('https://i.pinimg.com/originals/f5/15/48/f5154884ea8986a7674b592474130f14.png'); /* A better quality border image */
     max-width: 500px;
     width: 95%;
+}
+
+/* --- NEW: Custom Toggle Color Override --- */
+#location-toggle.peer:checked + div {
+    background-color: #2F4F4F;
+}
+
+#location-toggle.peer:focus + div {
+    --tw-ring-color: #2F4F4F;
 }
 
