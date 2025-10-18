@@ -18,8 +18,30 @@
         <p class="mt-4 text-xl text-gray-800 angelic-glow">Fetching weather data...</p>
     </div>
 
+    <!-- Location Permission Modal --><div id="location-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="modal-overlay absolute inset-0"></div>
+        <!-- Removed padding classes, now controlled by CSS for a better border --><div class="modal-content text-center rounded-3xl shadow-lg relative">
+            <h2 class="text-3xl font-bold mb-4 text-gray-800">Where are you?</h2>
+            <p class="text-gray-600 mb-6">Please enter your location to see the weather.</p>
+            <form id="modal-search-form" class="relative max-w-sm mx-auto">
+                <input id="modal-city-input" type="text" placeholder="e.g., London, UK"
+                       class="w-full py-3 pl-5 pr-12 text-lg text-gray-800 placeholder-gray-500 rounded-full focus:outline-none focus:ring-2 focus:ring-pink-400 border-2 border-gray-300">
+                <button type="submit" class="absolute top-1/2 right-4 transform -translate-y-1/2 text-gray-400 hover:text-pink-500 transition-colors">
+                    <i class="fas fa-search fa-lg"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
     <div id="app-wrapper" class="hidden w-full max-w-7xl mx-auto">
-        <!-- Search Bar --><div class="max-w-xl mx-auto mb-6">
+        <!-- Controls: Toggle and Search Bar --><div class="max-w-xl mx-auto mb-6">
+            <div class="flex justify-center items-center gap-4 mb-4 toggle-pill-container">
+                <span class="toggle-text font-medium">Use My Location</span>
+                <label for="location-toggle" class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="location-toggle" class="sr-only peer">
+                    <div class="w-11 h-6 bg-gray-300 rounded-full peer peer-focus:ring-2 peer-focus:ring-pink-300 peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-pink-500"></div>
+                </label>
+            </div>
             <form id="search-form" class="relative">
                 <input id="city-input" type="text" placeholder="Search for a city..."
                        class="w-full py-3 pl-5 pr-12 text-lg text-gray-800 placeholder-gray-600 rounded-full search-bar focus:outline-none focus:ring-2 focus:ring-pink-300 transition-all duration-300">
@@ -52,7 +74,7 @@
                         <div class="space-y-4">
                             <div class="flex justify-between items-center"><span class="text-gray-600">Humidity</span><span id="humidity" class="font-bold text-lg">--%</span></div>
                             <div class="flex justify-between items-center"><span class="text-gray-600">Wind Speed</span><span id="wind-speed" class="font-bold text-lg">-- km/h</span></div>
-                            <div class="flex justify-between items-center"><span class="text-gray-600">Pressure</span><span id="pressure" class="font-bold text-lg">-- hPa</span></div>
+                            <div class="flex justify-between items-center"><span id="pressure" class="font-bold text-lg">-- hPa</span></div>
                             <div class="flex justify-between items-center"><span class="text-gray-600">Visibility</span><span id="visibility" class="font-bold text-lg">-- km</span></div>
                         </div>
                     </div>
@@ -64,11 +86,22 @@
                 </div>
             </div>
 
-            <!-- Fun Fact sidebar (takes up 1 column on lg screens) --><div id="fun-fact-container" class="hidden lg:block lg:col-span-1 p-6 rounded-3xl shadow-lg fun-fact-card">
-                <h3 class="text-xl font-semibold mb-4 border-b border-gray-500 pb-2 flex items-center">
-                    Fun Facts <i class="fas fa-flower ml-2 text-pink-500"></i>
-                </h3>
-                <p id="fun-fact-text" class="text-gray-800 italic leading-relaxed">Loading fun fact...</p>
+            <!-- Sidebar container for Fun Facts and News --><div class="lg:col-span-1 space-y-6">
+                <!-- Fun Fact Card --><div id="fun-fact-container" class="hidden lg:block p-6 rounded-3xl shadow-lg fun-fact-card">
+                    <h3 class="text-xl font-semibold mb-4 border-b pb-2 flex items-center">
+                        Fun Facts <i class="fas fa-flower ml-2 text-pink-500"></i>
+                    </h3>
+                    <p id="fun-fact-text" class="text-gray-800 italic leading-relaxed">Loading fun fact...</p>
+                </div>
+
+                <!-- Current News Card --><div id="news-card-container" class="hidden lg:block p-6 rounded-3xl shadow-lg fun-fact-card">
+                    <h3 class="text-xl font-semibold mb-4 border-b pb-2 flex items-center">
+                        Current News
+                    </h3>
+                    <div id="news-container" class="text-gray-800 leading-relaxed">
+                        <p>Loading news...</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
