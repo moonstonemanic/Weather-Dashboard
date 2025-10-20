@@ -2,13 +2,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const weatherApiKey = 'fb66fe43361cd5009ce684e3da688b04';
     const newsApiKey = '5cf77a69e5104908af19f82cb3aa44ac';
 
-    // Element selectors
+    // --- ELEMENT SELECTORS ---
     const appWrapper = document.getElementById('app-wrapper');
     const weatherContainer = document.getElementById('weather-container');
     const loadingIndicator = document.getElementById('loading');
     const searchForm = document.getElementById('search-form');
     const cityInput = document.getElementById('city-input');
     const errorMessage = document.getElementById('error-message');
+    
+    // Main content selectors
+    const mainContent = document.getElementById('main-content');
     const cityNameEl = document.getElementById('city-name');
     const currentDateEl = document.getElementById('current-date');
     const weatherIconEl = document.getElementById('weather-icon');
@@ -19,29 +22,70 @@ document.addEventListener('DOMContentLoaded', () => {
     const pressureEl = document.getElementById('pressure');
     const visibilityEl = document.getElementById('visibility');
     const forecastContainer = document.getElementById('forecast-container');
+    
+    // Sidebar & Widgets
+    const sidebarContent = document.getElementById('sidebar-content');
+    const funFactContainer = document.getElementById('fun-fact-container');
+    const newsCardContainer = document.getElementById('news-card-container');
+    const plantingContainerMain = document.getElementById('planting-container-main');
     const funFactTextEl = document.getElementById('fun-fact-text');
     const newsContainerEl = document.getElementById('news-container');
-    const locationToggle = document.getElementById('location-toggle');
-    const plantSuggestionContentEl = document.getElementById('plant-suggestion-content'); // New selector
+    const plantingTextMainEl = document.getElementById('planting-text-main');
 
-    // Modal element selectors
+    // NEW Settings Dropdown
+    const settingsButton = document.getElementById('settings-button');
+    const settingsDropdown = document.getElementById('settings-dropdown');
+    const locationToggle = document.getElementById('location-toggle');
+    const funFactToggle = document.getElementById('fun-fact-toggle');
+    const newsToggle = document.getElementById('news-toggle');
+    const plantingToggle = document.getElementById('planting-toggle');
+
+    // Modal
     const locationModal = document.getElementById('location-modal');
     const modalSearchForm = document.getElementById('modal-search-form');
     const modalCityInput = document.getElementById('modal-city-input');
 
-    let flowerFacts = [];
-    let plantingGuide = {}; // New variable for planting data
-
-    // --- MODAL FUNCTIONS ---
-    const showLocationModal = () => {
-        locationModal.classList.remove('hidden');
+    let allData = {
+        facts: [],
+        planting: {}
     };
 
-    const hideLocationModal = () => {
-        locationModal.classList.add('hidden');
+    // --- MODAL & WIDGET LOGIC ---
+    const showLocationModal = () => locationModal.classList.remove('hidden');
+    const hideLocationModal = () => locationModal.classList.add('hidden');
+    
+    const updateGridLayout = () => {
+        const funFactsVisible = !funFactContainer.classList.contains('hidden');
+        const newsVisible = !newsCardContainer.classList.contains('hidden');
+
+        if (!funFactsVisible && !newsVisible) {
+            // If both sidebar items are hidden, expand main content
+            mainContent.classList.remove('lg:col-span-3');
+            mainContent.classList.add('lg:col-span-4');
+            sidebarContent.classList.add('hidden');
+        } else {
+            // Otherwise, show sidebar and set normal layout
+            mainContent.classList.remove('lg:col-span-4');
+            mainContent.classList.add('lg:col-span-3');
+            sidebarContent.classList.remove('hidden');
+        }
     };
 
-    // --- DATA FETCHING AND DISPLAY ---
+    const setupToggle = (toggle, container, storageKey) => {
+        // Default to 'true' for desktop, check storage for mobile decision
+        const isEnabled = localStorage.getItem(storageKey) !== 'false';
+        toggle.checked = isEnabled;
+        container.classList.toggle('hidden', !isEnabled);
+
+        toggle.addEventListener('change', () => {
+            const isChecked = toggle.checked;
+            localStorage.setItem(storageKey, isChecked);
+            container.classList.toggle('hidden', !isChecked);
+            updateGridLayout(); // Update grid on any toggle change
+        });
+    };
+
+    // --- DATA FETCHING ---
     const loadJsonData = async () => {
         try {
             const [factsResponse, plantingResponse] = await Promise.all([
@@ -50,51 +94,42 @@ document.addEventListener('DOMContentLoaded', () => {
             ]);
             if (!factsResponse.ok) throw new Error('Could not load flower facts.');
             if (!plantingResponse.ok) throw new Error('Could not load planting guide.');
-            
-            const factsData = await factsResponse.json();
-            const plantingData = await plantingResponse.json();
-            
-            flowerFacts = factsData.facts;
-            plantingGuide = plantingData;
+
+            allData.facts = (await factsResponse.json()).facts;
+            allData.planting = await plantingResponse.json();
+
         } catch (error) {
-            console.error(error);
-            funFactTextEl.textContent = 'Could not load fun facts.';
-            plantSuggestionContentEl.innerHTML = '<p class="text-sm italic">Could not load planting advice.</p>';
+            console.error("Error loading JSON data:", error);
+            // This ensures parts of the app don't fail if one file is missing
         }
     };
 
     const displayFunFact = () => {
-        if (flowerFacts.length === 0) return;
-        const randomIndex = Math.floor(Math.random() * flowerFacts.length);
-        funFactTextEl.textContent = flowerFacts[randomIndex];
+        if (!allData.facts || allData.facts.length === 0) return;
+        const randomIndex = Math.floor(Math.random() * allData.facts.length);
+        funFactTextEl.textContent = allData.facts[randomIndex];
     };
     
-    // --- NEW: Function to display planting suggestion ---
-    const displayPlantingSuggestion = (latitude) => {
-        if (Object.keys(plantingGuide).length === 0) return;
-
-        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        const currentMonth = monthNames[new Date().getMonth()];
-        const hemisphere = latitude >= 0 ? 'northernHemisphere' : 'southernHemisphere';
-        
-        const suggestions = plantingGuide[hemisphere][currentMonth];
-        if (suggestions && suggestions.length > 0) {
-            const suggestion = suggestions[Math.floor(Math.random() * suggestions.length)];
-            plantSuggestionContentEl.innerHTML = `<p class="text-gray-800 leading-relaxed"><strong class="font-semibold">${suggestion.name}</strong> ${suggestion.tip}</p>`;
-        } else {
-            plantSuggestionContentEl.innerHTML = '<p class="text-sm italic">No planting suggestions for this month.</p>';
+    const displayPlantingAdvice = (lat) => {
+        if (!allData.planting.months) {
+            plantingTextMainEl.textContent = "Planting advice is currently unavailable.";
+            return;
         }
+        const hemisphere = lat >= 0 ? 'northern' : 'southern';
+        const monthIndex = new Date().getMonth();
+        const month = allData.planting.months[monthIndex];
+        const advice = allData.planting.guides[hemisphere][month];
+        plantingTextMainEl.textContent = advice || "No specific advice for this month.";
     };
 
     const fetchNewsData = async () => {
-        if (!newsApiKey || newsApiKey === 'YOUR_NEW_NEWS_API_KEY_HERE') {
-            newsContainerEl.innerHTML = '<p class="text-sm italic">News API key is missing.</p>';
+        if (!newsApiKey || newsApiKey.includes('YOUR')) {
+            newsContainerEl.innerHTML = '<p class="text-sm italic">News API key needed.</p>';
             return;
         }
         const url = `https://newsapi.org/v2/top-headlines?category=general&language=en&pageSize=5&apiKey=${newsApiKey}`;
         try {
             const response = await fetch(url);
-            if (response.status === 401) throw new Error('News API key is invalid.');
             if (!response.ok) throw new Error('Could not fetch news headlines.');
             const data = await response.json();
             newsContainerEl.innerHTML = '';
@@ -122,7 +157,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${weatherApiKey}&units=metric`;
             const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${weatherApiKey}&units=metric`;
             const [weatherResponse, forecastResponse] = await Promise.all([fetch(apiUrl), fetch(forecastUrl)]);
-            if (weatherResponse.status === 401) throw new Error('Weather API key is invalid.');
             if (weatherResponse.status === 404) throw new Error(`City '${city}' not found.`);
             if (!weatherResponse.ok) throw new Error('Could not fetch weather data.');
             const weatherData = await weatherResponse.json();
@@ -176,8 +210,9 @@ document.addEventListener('DOMContentLoaded', () => {
             forecastContainer.innerHTML += forecastCard;
         });
         displayFunFact();
-        displayPlantingSuggestion(weather.coord.lat); // Call the new function here
+        displayPlantingAdvice(weather.coord.lat);
         weatherContainer.classList.remove('hidden');
+        updateGridLayout(); // Check layout after UI is updated
     };
 
     const getWeatherIcon = (iconCode) => {
@@ -188,6 +223,17 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // --- EVENT LISTENERS ---
+    settingsButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        settingsDropdown.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!settingsDropdown.contains(e.target) && !settingsButton.contains(e.target)) {
+            settingsDropdown.classList.add('hidden');
+        }
+    });
+
     searchForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const city = cityInput.value.trim();
@@ -239,7 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     showLocationModal();
                 }
             );
-        } else { // Geolocation not supported
+        } else { // Geolocation not supported by browser
             localStorage.setItem('locationPermission', 'denied');
             locationToggle.checked = false;
             loadingIndicator.classList.add('hidden');
@@ -248,18 +294,26 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
     const initializeApp = async () => {
-        await loadJsonData(); // Now loads both JSON files
+        await loadJsonData();
         fetchNewsData();
-        const permissionStatus = localStorage.getItem('locationPermission');
 
+        // Setup all toggles
+        setupToggle(funFactToggle, funFactContainer, 'funFactEnabled');
+        setupToggle(newsToggle, newsCardContainer, 'newsEnabled');
+        setupToggle(plantingToggle, plantingContainerMain, 'plantingEnabled');
+        
+        const permissionStatus = localStorage.getItem('locationPermission');
         if (permissionStatus === 'granted') {
             locationToggle.checked = true;
             getInitialWeather();
-        } else { // Covers 'denied' and first-time visitors
+        } else {
             locationToggle.checked = false;
+            // For first-time users or denied users, show modal immediately without waiting for geolocation timeout
             loadingIndicator.classList.add('hidden');
+            appWrapper.classList.remove('hidden');
             showLocationModal();
         }
+        updateGridLayout(); // Set initial layout
     };
 
     initializeApp();
